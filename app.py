@@ -18,6 +18,8 @@ app = Flask(__name__)
 app.secret_key = 'super_secret_color_systems_key'
 app.permanent_session_lifetime = timedelta(days=30)
 UPLOAD_FOLDER = os.path.join(sys_path, 'static', 'images', 'outdoors')
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(os.path.join(sys_path, '.tmp'), exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Filtro Jinja2 para parsear JSON de fotos
