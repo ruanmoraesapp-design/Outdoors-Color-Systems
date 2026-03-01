@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block title %}{{ outdoor.nome_identificador }} - Color Systems{% endblock %}
+
+{% block content %}
+<section class="max-w-7xl mx-auto px-6 py-12 animate-fade-in-up">
+
+    <!-- Breadcrumb Nav -->
+    <a href="{{ url_for('home') }}"
+        class="text-sm text-dim hover:text-white transition-colors mb-8 inline-flex items-center gap-2">
+        <i class="ph ph-arrow-left"></i> Voltar ao Catálogo
+    </a>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        <!-- Coluna Esquerda: Detalhes e Mapa (Bento Grid Style) -->
+        <div class="lg:col-span-2 space-y-8">
+
+            <!-- Hero Card do Outdoor -->
+            <div class="bento-card relative overflow-hidden !pb-10">
+                <div
+                    class="absolute -top-20 -right-20 w-64 h-64 bg-neon/10 blur-[100px] rounded-full pointer-events-none">
+                </div>
+
+                <div class="flex items-start justify-between mb-4">
+                    <h1 class="text-3xl md:text-5xl font-bold font-display text-white pr-4 leading-tight">{{
+                        outdoor.nome_identificador }}</h1>
+
+                    {% if outdoor.status == 'disponivel' %}
+                    <span
+                        class="px-4 py-1.5 bg-green-500/10 text-green-400 border border-green-500/20 rounded-full text-sm font-medium whitespace-nowrap">Disponível</span>
+                    {% elif outdoor.status == 'ocupado' %}
+                    <span
+                        class="px-4 py-1.5 bg-orange-500/10 text-orange-400 border border-orange-500/20 rounded-full text-sm font-medium whitespace-nowrap">Ocupado</span>
+                    {% else %}
+                    <span
+                        class="px-4 py-1.5 bg-white/10 text-dim border border-white/20 rounded-full text-sm font-medium whitespace-nowrap">{{
+                        outdoor.status|title }}</span>
+                    {% endif %}
+                </div>
+
+                <p class="text-lg text-dim mb-8"><i class="ph ph-map-pin text-neon mr-2"></i>{{
+                    outdoor.localizacao_texto }}</p>
+
+                <!-- Galeria de Fotos com Slider -->
+                {% set fotos = outdoor.foto_url|parse_fotos %}
+                {% if fotos %}
+                <div class="relative w-full h-64 md:h-80 rounded-xl overflow-hidden mb-8 border border-white/5 bg-bgdark/50"
+                    id="fotoSlider">
+                    {% for foto in fotos %}
+                    <img src="{{ foto }}" alt="{{ outdoor.nome_identificador }} - Foto {{ loop.index }}"
+                        class="slider-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 {% if not loop.first %}opacity-0{% endif %}"
+                        data-index="{{ loop.index0 }}">
+                    {% endfor %}
+                    {% if fotos|length > 1 %}
+                    <button onclick="slidePhoto(-1)"
+                        class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/70 transition-all z-10 border border-white/10"><i
+                            class="ph ph-caret-left text-xl"></i></button>
+                    <button onclick="slidePhoto(1)"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/70 transition-all z-10 border border-white/10"><i
+                            class="ph ph-caret-right text-xl"></i></button>
+                    <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                        {% for foto in fotos %}
+                        <div class="slider-dot w-2 h-2 rounded-full {% if loop.first %}bg-neon{% else %}bg-white/40{% endif %} transition-colors cursor-pointer"
+                            onclick="goToSlide({{ loop.index0 }})"></div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <!-- Grid Embutido Específicações -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pb-8 border-b border-white/5">
+                    <div>
+                        <p class="text-xs text-dim uppercase tracking-wider font-display mb-1"><i
+                                class="ph ph-rulers mr-1"></i> Formato</p>
+                        <p class="text-xl font-bold text-white">{{ outdoor.dimensoes }}</p>
+                    </div>
+                </div>
+
+                <div class="pt-8">
+                    <h3 class="text-xl font-display font-medium text-white mb-3">Sobre o Espaço</h3>
+                    <p class="text-dim leading-relaxed whitespace-pre-line">{{ outdoor.especificacoes }}</p>
+                </div>
+            </div>
+
+            <!-- Mapa (Bento Card) -->
+            <div class="bento-card !p-0 overflow-hidden relative">
+                <div class="p-6 border-b border-white/5">
+                    <h3 class="text-xl font-display font-medium text-white flex items-center gap-2"><i
+                            class="ph ph-map-trifold text-neon"></i> Localização Exata</h3>
+                </div>
+
+                {% if outdoor.link_google_maps %}
+                <div class="relative z-10 text-center">
+                    <div
+                        class="w-16 h-16 rounded-full bg-neon/20 border border-neon/50 text-neon flex items-center justify-center text-3xl mx-auto mb-4 animate-bounce">
+                        <i class="ph ph-map-pin-line"></i>
+                    </div>
+                    <a href="{{ outdoor.link_google_maps }}" target="_blank" rel="noopener noreferrer"
+                        class="btn-primary">Abrir Visualização no Google Maps
+                        <i class="ph ph-arrow-square-out ml-2"></i></a>
+                </div>
+                {% elif outdoor.lat and outdoor.lng %}
+                <div class="relative z-10 text-center">
+                    <div
+                        class="w-16 h-16 rounded-full bg-neon/20 border border-neon/50 text-neon flex items-center justify-center text-3xl mx-auto mb-4 animate-bounce">
+                        <i class="ph ph-map-pin-line"></i>
+                    </div>
+                    <a href="https://www.google.com/maps/search/?api=1&query={{ outdoor.lat }},{{ outdoor.lng }}"
+                        target="_blank" class="btn-primary">Explorar no Google Maps <i
+                            class="ph ph-arrow-square-out ml-2"></i></a>
+                </div>
+                {% else %}
+                <div class="relative z-10 text-center">
+                    <div
+                        class="w-16 h-16 rounded-full bg-white/10 border border-white/20 text-dim flex items-center justify-center text-3xl mx-auto mb-4">
+                        <i class="ph ph-map-pin-line"></i>
+                    </div>
+                    <p class="text-dim text-sm">Link do mapa não disponível.</p>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <!-- Coluna Direita: Sticky CTA -->
+        <div class="lg:col-span-1">
+            <div class="sticky top-28 bento-card border-neon/30 shadow-[0_10px_40px_rgba(0,163,255,0.1)]">
+
+                {% if outdoor.status == 'disponivel' %}
+                <div class="text-center mb-8">
+                    <div
+                        class="inline-flex items-center justify-center p-3 bg-neon/10 rounded-2xl text-neon text-3xl mb-4">
+                        <i class="ph ph-rocket-launch"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-display text-white mb-2">Pronto para anunciar?</h3>
+                    <p class="text-sm text-dim">Agilize seu investimento fechando negócio via WhatsApp.</p>
+                </div>
+
+                <!-- CTA do Whatsapp Formatado para Ocultar Preço -->
+                <a href="https://wa.me/558934228275?text=Olá! Adoraria receber uma cotação e mais detalhes do outdoor *{{ outdoor.nome_identificador|urlencode }}*. Poderiam me ajudar?"
+                    target="_blank"
+                    class="btn-primary w-full shadow-[0_0_20px_rgba(0,163,255,0.4)] hover:shadow-[0_0_30px_rgba(0,163,255,0.6)] !py-4 text-lg justify-center mb-4">
+                    Solicitar Cotação Completa
+                </a>
+
+                <p class="text-xs text-center text-dim mt-4"><i class="ph ph-clock mr-1"></i> Retornamos em menos de 1
+                    hora.</p>
+
+                {% else %}
+                <div class="text-center mb-8">
+                    <div
+                        class="inline-flex items-center justify-center p-3 bg-orange-500/10 rounded-2xl text-orange-400 text-3xl mb-4">
+                        <i class="ph ph-hourglass-high"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-display text-white mb-2">Espaço Ocupado</h3>
+                    <p class="text-sm text-dim">Este outdoor já é o lar de outra grande marca brilhando nas ruas.</p>
+                </div>
+
+                <div class="bg-bgdark/50 rounded-xl p-4 mb-6 border border-white/5">
+                    <p class="text-sm text-white font-medium mb-1">Deseja este ponto no futuro?</p>
+                    <p class="text-xs text-dim">Insira-se na reserva preferencial.</p>
+                </div>
+
+                <a href="https://wa.me/558934228275?text=Olá! Sei que o outdoor *{{ outdoor.nome_identificador|urlencode }}* está ocupado, mas queria entrar na fila de espera para quando vagar!"
+                    target="_blank"
+                    class="btn-secondary w-full text-dim hover:text-white border-white/20 hover:border-white/40 !py-4 justify-center">
+                    Entrar na Fila de Espera
+                </a>
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slider-img');
+    const dots = document.querySelectorAll('.slider-dot');
+
+    function goToSlide(index) {
+        if (slides.length === 0) return;
+        slides.forEach(s => s.classList.add('opacity-0'));
+        dots.forEach(d => { d.classList.remove('bg-neon'); d.classList.add('bg-white/40'); });
+        currentSlide = index;
+        slides[currentSlide].classList.remove('opacity-0');
+        if (dots[currentSlide]) {
+            dots[currentSlide].classList.remove('bg-white/40');
+            dots[currentSlide].classList.add('bg-neon');
+        }
+    }
+
+    function slidePhoto(dir) {
+        if (slides.length === 0) return;
+        let next = (currentSlide + dir + slides.length) % slides.length;
+        goToSlide(next);
+    }
+</script>
+{% endblock %}

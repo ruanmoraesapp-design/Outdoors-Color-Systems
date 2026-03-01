@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Acesso Restrito - Color Systems{% endblock %}
+
+{% block content %}
+<section class="relative min-h-[85vh] flex items-center justify-center px-4 overflow-hidden">
+    <!-- Glow Centralizado (Dark Mode Aesthetics) -->
+    <div class="absolute w-[400px] h-[400px] bg-neon/15 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+
+    <div class="w-full max-w-md">
+        <!-- Card Bento para Login -->
+        <div class="bento-card relative">
+
+            <div class="text-center mb-10">
+                <div
+                    class="w-12 h-12 rounded-xl bg-gradient-to-br from-neon to-blue-600 flex items-center justify-center text-white mx-auto mb-4 shadow-[0_0_20px_rgba(0,163,255,0.4)]">
+                    <i class="ph ph-lock-key text-2xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold font-display text-white">Acesso Restrito</h1>
+                <p class="text-dim text-sm mt-2">Área de Clientes e Administração</p>
+            </div>
+
+            {% if error %}
+            <div
+                class="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl mb-6 text-sm flex items-center gap-3">
+                <i class="ph ph-warning-circle text-xl"></i>
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <form action="{{ url_for('login') }}" method="POST" class="space-y-5">
+                <div class="flex flex-col gap-1.5">
+                    <label for="email"
+                        class="text-sm font-display text-dim font-medium uppercase tracking-wider">E-mail</label>
+                    <div class="relative">
+                        <i class="ph ph-envelope-simple absolute left-4 top-1/2 -translate-y-1/2 text-dim text-lg"></i>
+                        <input type="email" id="email" name="email" class="input-dark w-full pl-11"
+                            placeholder="admin@colorsystems.com" required autocomplete="email">
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <label for="senha"
+                        class="text-sm font-display text-dim font-medium uppercase tracking-wider">Senha</label>
+                    <div class="relative">
+                        <i class="ph ph-lock absolute left-4 top-1/2 -translate-y-1/2 text-dim text-lg"></i>
+                        <input type="password" id="senha" name="senha" class="input-dark w-full pl-11"
+                            placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="btn-primary w-full mt-4 py-3 text-lg justify-center shadow-[0_4px_15px_rgba(0,163,255,0.2)]">
+                    Entrar <i class="ph ph-arrow-right ml-2 text-xl"></i>
+                </button>
+            </form>
+
+            <div class="mt-8 text-center border-t border-white/5 pt-6">
+                <a href="https://wa.me/558934228275" target="_blank"
+                    class="text-sm text-dim hover:text-white transition-colors flex items-center justify-center gap-2">
+                    Esqueceu a senha? Solicite no suporte <i class="ph ph-whatsapp-logo text-neon"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

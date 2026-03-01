@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Color Systems - Outdoors{% endblock %}</title>
+    <!-- Tailwind CSS (CDN para prototipagem rápida) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuração do Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        surface: '#1E293B',
+                        bgdark: '#0F172A',
+                        neon: '#00A3FF',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Phosphor Icons para iconografia moderna -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Custom CSS (Design System) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="bg-bgdark text-white min-h-screen flex flex-col antialiased">
+
+    <!-- Navbar (Glassmorphism sutil) -->
+    <nav class="sticky top-0 z-50 backdrop-blur-md bg-bgdark/80 border-b border-white/5 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <!-- Se a logo não carregar, fallback para CSS Logo -->
+                <img src="/static/images/logo_empresa.png" alt="Color Systems Logo" class="h-10 w-auto object-contain"
+                    onerror="this.style.display='none'; document.getElementById('css-logo').style.display='block';">
+                <div id="css-logo" style="display: none;"
+                    class="font-display font-bold text-xl tracking-tight flex items-center gap-2">
+                    <span
+                        class="w-8 h-8 rounded-lg bg-gradient-to-tr from-neon to-blue-600 flex items-center justify-center text-white p-1">
+                        <i class="ph ph-aperture text-xl"></i>
+                    </span>
+                    Color Systems
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="{{ url_for('home') }}"
+                    class="text-text-dim hover:text-white transition-colors duration-200">Catálogo</a>
+                <a href="{{ url_for('login') }}" class="btn-secondary text-sm px-4 py-2">
+                    <i class="ph ph-user mr-2"></i> Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer Vertical Minimalista -->
+    <footer class="border-t border-white/5 py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-6 text-center text-dim font-display text-sm">
+            <p>&copy; 2026 Color Systems. Todos os direitos reservados.</p>
+            <p class="mt-2 text-xs opacity-50">Comunicação Visual Premium</p>
+            <div class="flex justify-center mt-4 text-neon/60 gap-4">
+                <a href="https://www.instagram.com/color.systems/" target="_blank" rel="noopener noreferrer"><i
+                        class="ph ph-instagram-logo text-2xl hover:text-neon cursor-pointer transition-colors"></i></a>
+                <a href="https://wa.me/558934228275" target="_blank" rel="noopener noreferrer"><i
+                        class="ph ph-whatsapp-logo text-2xl hover:text-neon cursor-pointer transition-colors"></i></a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

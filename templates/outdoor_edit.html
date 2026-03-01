@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Editar {{ outdoor.nome_identificador }} - Admin{% endblock %}
+
+{% block content %}
+<section class="max-w-3xl mx-auto px-6 py-12 animate-fade-in-up">
+    <!-- Header Admin -->
+    <a href="{{ url_for('dashboard') }}"
+        class="text-sm text-dim hover:text-white transition-colors mb-6 inline-flex items-center gap-2">
+        <i class="ph ph-arrow-left"></i> Voltar ao Dashboard
+    </a>
+
+    <div class="mb-10 pb-6 border-b border-white/5 relative">
+        <div class="absolute -top-10 -left-10 w-40 h-40 bg-neon/10 blur-[80px] rounded-full pointer-events-none"></div>
+        <h1 class="text-3xl font-bold font-display text-white">Editar Outdoor</h1>
+        <p class="text-dim mt-1">Alterando informações de <strong>{{ outdoor.nome_identificador }}</strong></p>
+    </div>
+
+    <!-- Form (Bento Card) -->
+    <div class="bento-card">
+        <form method="POST" action="{{ url_for('outdoor_edit', id=outdoor.id) }}" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label
+                        class="block text-sm font-display text-dim mb-2 uppercase tracking-wide">Identificador</label>
+                    <input type="text" name="nome_identificador" value="{{ outdoor.nome_identificador }}"
+                        class="input-dark w-full">
+                </div>
+                <div>
+                    <label class="block text-sm font-display text-dim mb-2 uppercase tracking-wide">Preço (Mensal
+                        Base)</label>
+                    <input type="number" step="0.01" name="preco_mensal_base" value="{{ outdoor.preco_mensal_base }}"
+                        class="input-dark w-full">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-display text-dim mb-2 uppercase tracking-wide">Status Atual</label>
+                <select name="status" class="input-dark w-full appearance-none cursor-pointer">
+                    <option value="disponivel" {% if outdoor.status=='disponivel' %}selected{% endif %}>Disponível
+                    </option>
+                    <option value="ocupado" {% if outdoor.status=='ocupado' %}selected{% endif %}>Ocupado</option>
+                    <option value="manutencao" {% if outdoor.status=='manutencao' %}selected{% endif %}>Em Manutenção
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-display text-dim mb-2 uppercase tracking-wide">Especificações</label>
+                <textarea name="especificacoes" rows="4"
+                    class="input-dark w-full">{{ outdoor.especificacoes }}</textarea>
+            </div>
+
+            <div class="pt-6 border-t border-white/5 flex gap-4 justify-end">
+                <a href="{{ url_for('dashboard') }}" class="btn-secondary !py-3">Cancelar</a>
+                <button type="submit" class="btn-primary shadow-[0_4px_15px_rgba(0,163,255,0.3)] !py-3"><i
+                        class="ph ph-floppy-disk mr-2"></i> Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

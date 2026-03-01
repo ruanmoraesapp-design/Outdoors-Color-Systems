@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Novo Cliente - Admin{% endblock %}
+
+{% block content %}
+<section class="max-w-3xl mx-auto px-6 py-12 animate-fade-in-up">
+    <!-- Header Admin -->
+    <a href="{{ url_for('admin_clientes') }}"
+        class="text-sm text-dim hover:text-white transition-colors mb-6 inline-flex items-center gap-2">
+        <i class="ph ph-arrow-left"></i> Voltar à Lista de Clientes
+    </a>
+
+    <div class="mb-10 pb-6 border-b border-white/5 relative">
+        <div class="absolute -top-10 -left-10 w-40 h-40 bg-neon/10 blur-[80px] rounded-full pointer-events-none"></div>
+        <h1 class="text-3xl font-bold font-display text-white">Cadastrar Cliente</h1>
+        <p class="text-dim mt-1">Insira os dados cadastrais da empresa ou pessoa física.</p>
+    </div>
+
+    <!-- Form (Bento Card) -->
+    <div class="bento-card">
+        <form method="POST" action="{{ url_for('cliente_new') }}" class="space-y-6">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-display text-dim mb-2 uppercase tracking-wide">Nome Completo /
+                        Razão Social</label>
+                    <input type="text" name="nome_razao_social" required class="input-dark w-full"
+                        placeholder="Ex: Color Systems Publicidade LTDA">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-display text-dim mb-2 uppercase tracking-wide">CPF ou CNPJ</label>
+                    <input type="text" name="cpf_cnpj" required class="input-dark w-full"
+                        placeholder="00.000.000/0001-00">
+                    <p class="text-xs text-dim mt-1">Este documento será utilizado futuramente como senha de acesso do
+                        cliente.</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-display text-dim mb-2 uppercase tracking-wide">Telefone /
+                        WhatsApp</label>
+                    <input type="text" name="telefone" required class="input-dark w-full" placeholder="(00) 00000-0000">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-display text-dim mb-2 uppercase tracking-wide">E-mail Principal
+                        (Login)</label>
+                    <input type="email" name="email" required class="input-dark w-full"
+                        placeholder="contato@empresa.com.br">
+                    <p class="text-xs text-dim mt-1">O cliente usará este e-mail para visualizar seus contratos e
+                        faturas no sistema.</p>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-white/5 flex gap-4 justify-end">
+                <a href="{{ url_for('admin_clientes') }}" class="btn-secondary !py-3">Cancelar</a>
+                <button type="submit" class="btn-primary shadow-[0_4px_15px_rgba(0,163,255,0.3)] !py-3"><i
+                        class="ph ph-floppy-disk mr-2"></i> Criar Cliente</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
