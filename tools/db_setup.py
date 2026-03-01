@@ -27,9 +27,12 @@ def setup_database():
             lng REAL,
             dimensoes TEXT,
             especificacoes TEXT,
-            fotos TEXT, -- Armazenará um JSON array com URLs
+            fotos TEXT,
             status TEXT NOT NULL CHECK(status IN ('disponivel', 'ocupado', 'manutencao')),
             preco_mensal_base REAL NOT NULL,
+            bairro TEXT,
+            link_google_maps TEXT,
+            foto_url TEXT,
             criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
             atualizado_em DATETIME DEFAULT CURRENT_TIMESTAMP
         );
