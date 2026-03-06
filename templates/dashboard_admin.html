@@ -25,6 +25,31 @@
         </div>
     </div>
 
+    {% if alertas_vencimento and alertas_vencimento > 0 %}
+    <div class="mb-8 p-4 bg-red-500/10 border border-red-500/30 rounded-xl flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <i class="ph ph-warning-circle text-2xl text-red-400 animate-pulse"></i>
+            <div>
+                <h4 class="text-red-400 font-bold font-display">Atenção: Contratos Vencendo!</h4>
+                <p class="text-sm text-red-400/80">Você tem {{ alertas_vencimento }} outdoor(s) com contrato encerrando nos próximos 30 dias.</p>
+            </div>
+        </div>
+        <button onclick="filterTable('vencendo')" class="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-300 text-sm font-bold rounded-lg transition-colors">
+            Filtrar Vencimentos
+        </button>
+    </div>
+    {% endif %}
+
+    <!-- Filtros de Prazo -->
+    <div class="flex gap-3 mb-6">
+        <button class="px-4 py-2 text-sm font-medium font-display rounded-full border border-white/10 bg-surface/50 text-dim hover:text-white hover:border-white/30 transition-all filter-btn" data-filter="recente" onclick="filterTable('recente')">
+            <i class="ph ph-clock-counter-clockwise mr-1"></i> Contratos Recentes (30 dias)
+        </button>
+        <button class="px-4 py-2 text-sm font-medium font-display rounded-full border border-white/10 bg-surface/50 text-dim hover:text-white hover:border-white/30 transition-all filter-btn" data-filter="vencendo" onclick="filterTable('vencendo')">
+            <i class="ph ph-warning mr-1"></i> Encerrando em Breve
+        </button>
+    </div>
+
     <!-- Quick Stats (Bento Grid Mini) -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         <div class="bento-card !py-6 !px-8 flex items-center justify-between group cursor-pointer border border-transparent hover:border-white/20 transition-all filter-btn"
@@ -91,7 +116,7 @@
                 <tbody class="divide-y divide-white/5" id="outdoorsTableBody">
                     {% for outdoor in outdoors %}
                     <tr class="hover:bg-white/[0.02] transition-colors group table-row-outdoor"
-                        data-status="{{ outdoor.status }}">
+                        data-status="{{ outdoor.status }}" data-prazo="{{ outdoor.prazo_status or 'normal' }}">
                         <td class="p-4 pl-6 text-white font-medium">
                             {{ outdoor.nome_identificador }}
                             <div class="text-dim text-xs mt-1 font-normal">{{ outdoor.dimensoes }}</div>
@@ -107,6 +132,20 @@
                                 class="px-2.5 py-1 bg-orange-500/10 text-orange-400 border border-orange-500/20 rounded-full text-xs font-medium inline-block mb-1">Ocupado</span>
                             <div class="text-white text-xs mt-1 font-medium"><i class="ph ph-user text-dim mr-1"></i> {{
                                 outdoor.cliente_nome or 'Cliente Oculto' }}</div>
+                            {% if outdoor.dias_restantes is defined %}
+                                {% if outdoor.dias_restantes > 60 %}
+                                    {% set cor_prazo = 'text-green-400 bg-green-500/10 border-green-500/20' %}
+                                {% elif outdoor.dias_restantes >= 0 %}
+                                    {% set cor_prazo = 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20' %}
+                                    {% if outdoor.dias_restantes <= 30 %}{% set cor_prazo = 'text-red-400 bg-red-500/10 border-red-500/20 animate-pulse' %}{% endif %}
+                                {% else %}
+                                    {% set cor_prazo = 'text-red-600 bg-red-900/30 border-red-900/50' %}
+                                {% endif %}
+                                <div class="mt-2 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded border inline-block {{ cor_prazo }}">
+                                    {% if outdoor.dias_restantes >= 0 %}Restam {{ outdoor.dias_restantes }} dias{% else %}Vencido há {{ outdoor.dias_restantes|abs }} dias{% endif %}
+                                </div>
+                                <div class="text-dim text-[10px] mt-0.5">{{ outdoor.data_inicio.split('-')|reverse|join('/') }} a {{ outdoor.data_teorica_fim.split('-')|reverse|join('/') }}</div>
+                            {% endif %}
                             {% else %}
                             <span
                                 class="px-2.5 py-1 bg-white/10 text-dim border border-white/20 rounded-full text-xs font-medium">{{
@@ -146,7 +185,7 @@
                 class="ph ph-grid-four text-neon"></i> Visão em Cards</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="outdoorCardsGrid">
             {% for outdoor in outdoors %}
-            <div class="bento-card group flex flex-col justify-between outdoor-card" data-status="{{ outdoor.status }}"
+            <div class="bento-card group flex flex-col justify-between outdoor-card" data-status="{{ outdoor.status }}" data-prazo="{{ outdoor.prazo_status or 'normal' }}"
                 style="min-height: 320px;">
                 <div>
                     <div
@@ -188,6 +227,22 @@
                     {% if outdoor.status == 'ocupado' and outdoor.cliente_nome %}
                     <p class="text-white text-xs mt-2"><i class="ph ph-user inline mr-1 text-neon/50"></i>{{
                         outdoor.cliente_nome }}</p>
+                    {% if outdoor.dias_restantes is defined %}
+                        {% if outdoor.dias_restantes > 60 %}
+                            {% set cor_prazo = 'text-green-400 bg-green-500/10 border-green-500/20' %}
+                        {% elif outdoor.dias_restantes >= 0 %}
+                            {% set cor_prazo = 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20' %}
+                            {% if outdoor.dias_restantes <= 30 %}{% set cor_prazo = 'text-red-400 bg-red-500/10 border-red-500/20 animate-pulse' %}{% endif %}
+                        {% else %}
+                            {% set cor_prazo = 'text-red-600 bg-red-900/30 border-red-900/50' %}
+                        {% endif %}
+                        <div class="mt-2 flex items-center justify-between">
+                            <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded border {{ cor_prazo }}">
+                                {% if outdoor.dias_restantes >= 0 %}Restam {{ outdoor.dias_restantes }} dias{% else %}Vencido{% endif %}
+                            </span>
+                            <span class="text-dim text-[10px]">{{ outdoor.data_inicio.split('-')|reverse|join('/') }} a {{ outdoor.data_teorica_fim.split('-')|reverse|join('/') }}</span>
+                        </div>
+                    {% endif %}
                     {% endif %}
                 </div>
                 <div class="border-t border-white/5 pt-3 mt-3 flex gap-2">
@@ -218,7 +273,16 @@
         let visibleCount = 0;
 
         rows.forEach(row => {
-            if (statusTerm === 'todos' || row.dataset.status === statusTerm) {
+            let show = false;
+            if (statusTerm === 'todos') {
+                show = true;
+            } else if (['disponivel', 'ocupado', 'manutencao'].includes(statusTerm)) {
+                show = (row.dataset.status === statusTerm);
+            } else if (['recente', 'vencendo'].includes(statusTerm)) {
+                show = (row.dataset.prazo === statusTerm);
+            }
+
+            if (show) {
                 row.style.display = 'table-row';
                 visibleCount++;
             } else {
@@ -233,7 +297,16 @@
 
         // Filtrar cards visuais
         document.querySelectorAll('.outdoor-card').forEach(card => {
-            if (statusTerm === 'todos' || card.dataset.status === statusTerm) {
+            let show = false;
+            if (statusTerm === 'todos') {
+                show = true;
+            } else if (['disponivel', 'ocupado', 'manutencao'].includes(statusTerm)) {
+                show = (card.dataset.status === statusTerm);
+            } else if (['recente', 'vencendo'].includes(statusTerm)) {
+                show = (card.dataset.prazo === statusTerm);
+            }
+
+            if (show) {
                 card.style.display = 'flex';
             } else {
                 card.style.display = 'none';

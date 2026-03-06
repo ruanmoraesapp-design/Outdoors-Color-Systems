@@ -77,25 +77,58 @@ def dashboard():
     role = session.get('papel')
     user_id = session.get('user_id')
     
+    from datetime import datetime
+    hoje = datetime.now().date()
+    alertas_vencimento = 0
+
     if role == 'admin':
         # Carregar todos os outdoors
         all_outdoors = list_outdoors()
         
         # Buscar cliente vinculado se estiver ocupado
         for outdoor in all_outdoors:
+            # Converte row_factory de sqlite3 para dict para podermos injetar dados facilmente
+            import collections
+            if isinstance(outdoor, sqlite3.Row) if 'sqlite3' in globals() else type(outdoor).__name__ == 'Row':
+                outdoor = dict(outdoor) # Will not re-assign since list_outdoors returns dicts or sqlite3 rows
+                
             if outdoor['status'] == 'ocupado':
                 contract = get_active_contract_by_outdoor(outdoor['id'])
                 if contract:
                     outdoor['cliente_nome'] = contract['cliente_nome']
+                    outdoor['data_inicio'] = contract['data_inicio']
+                    outdoor['data_teorica_fim'] = contract['data_teorica_fim']
                     
-        return render_template('dashboard_admin.html', outdoors=all_outdoors, user_role=role)
+                    dt_inicio = datetime.strptime(contract['data_inicio'], '%Y-%m-%d').date()
+                    dt_fim = datetime.strptime(contract['data_teorica_fim'], '%Y-%m-%d').date()
+                    
+                    dias_restantes = (dt_fim - hoje).days
+                    outdoor['dias_restantes'] = dias_restantes
+                    
+                    if dias_restantes <= 30:
+                        outdoor['prazo_status'] = 'vencendo'
+                        alertas_vencimento += 1
+                    elif (hoje - dt_inicio).days <= 30:
+                        outdoor['prazo_status'] = 'recente'
+                    else:
+                        outdoor['prazo_status'] = 'normal'
+                    
+        return render_template('dashboard_admin.html', outdoors=all_outdoors, user_role=role, alertas_vencimento=alertas_vencimento)
     else:
         # Carregar contratos do cliente logado
         contracts = get_contracts_by_client(user_id)
         for contract in contracts:
             contract['boletos'] = get_boletos_by_contract(contract['id'])
+            if contract['status'] == 'ativo':
+                dt_fim = datetime.strptime(contract['data_teorica_fim'], '%Y-%m-%d').date()
+                dias_restantes = (dt_fim - hoje).days
+                contract['dias_restantes'] = dias_restantes
+                
+                if dias_restantes <= 30:
+                    contract['prazo_status'] = 'vencendo'
+                    alertas_vencimento += 1
             
-        return render_template('dashboard_cliente.html', contracts=contracts, user_role=role)
+        return render_template('dashboard_cliente.html', contracts=contracts, user_role=role, alertas_vencimento=alertas_vencimento)
 
 @app.route('/admin/clientes')
 def admin_clientes():
