@@ -17,7 +17,7 @@ def normalize_string(s):
     return "".join(c for c in s if c.isalnum()).lower()
 
 def run_import():
-    json_path = os.path.join(sys_path, '.tmp', 'mock_datarow.json')
+    json_path = os.path.join(sys_path, 'tools', 'mock_datarow.json')
     
     if not os.path.exists(json_path):
         print(f"[ERRO] Arquivo JSON nao encontrado em: {json_path}")

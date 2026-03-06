@@ -1,0 +1,182 @@
+[
+    {
+        "id": "Placa 01",
+        "endereco": "BR. 316 (Próximo a UESPI)",
+        "material": "Papel",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "Laboratório Brito - Medic Brito",
+        "os": "3667"
+    },
+    {
+        "id": "Placa 02",
+        "endereco": "BR. 316 (Próximo a R. Sá)",
+        "material": "Papel",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "CRISPINIANO",
+        "os": "4488"
+    },
+    {
+        "id": "Placa 03",
+        "endereco": "BR. 316 (Em frente a R. Sá)",
+        "material": "Papel",
+        "dimensoes": "9x3m",
+        "status": "Disponivel",
+        "cliente": null,
+        "os": null
+    },
+    {
+        "id": "Placa 04",
+        "endereco": "BR. 316 (Em frente a R. Sá)",
+        "material": "Papel",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "Virtex Telecom",
+        "os": "3615"
+    },
+    {
+        "id": "Placa 05",
+        "endereco": "BR. 316 (Em frente ao condominio Santiago)",
+        "material": "Papel",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "Colégio Machado de Assis",
+        "os": "4428"
+    },
+    {
+        "id": "Placa 06",
+        "endereco": "BR. 316 (Descida Altamira)",
+        "material": "Papel",
+        "dimensoes": "9x3m",
+        "status": "Disponivel",
+        "cliente": null,
+        "os": null
+    },
+    {
+        "id": "Placa 07",
+        "endereco": "BR. 316 (Descida Altamira lado esquerdo)",
+        "material": "Papel",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "CRISPINIANO",
+        "os": "4488"
+    },
+    {
+        "id": "Placa 08",
+        "endereco": "BR. 316 (Descida Altamira lado direito)",
+        "material": "Papel",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "Laboratório Brito - Medic Brito",
+        "os": "3664"
+    },
+    {
+        "id": "Placa 09",
+        "endereco": "BR. 316 (Descida Altamira lado direito)",
+        "material": "Papel",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "Unifisio",
+        "os": "2433"
+    },
+    {
+        "id": "Placa 10",
+        "endereco": "BR. 316 (Próximo ao Comercial Barroso)",
+        "material": "Lona",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "Carmen Steffens",
+        "os": "1477"
+    },
+    {
+        "id": "Placa 11",
+        "endereco": "BR. 316 (Próximo ao Comercial Barroso)",
+        "material": "Lona",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "Dra. Késsia Leal",
+        "os": null
+    },
+    {
+        "id": "Placa 12",
+        "endereco": "BR. 316 (Em frente ao Assai Atacadista)",
+        "material": "Papel",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "CRISPINIANO",
+        "os": "4488"
+    },
+    {
+        "id": "Placa 13",
+        "endereco": "Av. Severo Eulálio (Próximo ao Picos Beach Tênis)",
+        "material": "Papel",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "Clinica Popular de Picos",
+        "os": "4244"
+    },
+    {
+        "id": "Placa 14",
+        "endereco": "Av. Severo Eulálio (Próximo ao Picos Beach Tênis)",
+        "material": "Papel",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "Clinica Popular de Picos",
+        "os": "4244"
+    },
+    {
+        "id": "Placa 15",
+        "endereco": "Av. Severo Eulálio (Próximo ao Picos Beach Tênis)",
+        "material": "Papel",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "Clinica Popular de Picos",
+        "os": "4244"
+    },
+    {
+        "id": "Placa 16",
+        "endereco": "Av. Severo Eulálio (Próximo ao Picos Beach Tênis)",
+        "material": "Papel",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "Virtex Telecom",
+        "os": "3615"
+    },
+    {
+        "id": "Placa 17",
+        "endereco": "Av. Severo Eulálio (Próximo ao Picos Beach Tênis)",
+        "material": "Lona",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "Dr. Luciano Luz",
+        "os": "960"
+    },
+    {
+        "id": "Placa 18",
+        "endereco": "Av. Severo Eulálio (Próximo ao Picos Beach Tênis)",
+        "material": "Papel",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "Dra. Aline Luz",
+        "os": "4425"
+    },
+    {
+        "id": "Placa 19",
+        "endereco": "Av. Severo Eulálio (Próximo ao Picos Beach Tênis)",
+        "material": "Papel",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "CRISPINIANO",
+        "os": "4488"
+    },
+    {
+        "id": "Placa 20",
+        "endereco": "Av. Severo Eulálio (Próximo ao Picos Beach Tênis)",
+        "material": "Papel",
+        "dimensoes": "9x3m",
+        "status": "Ocupado",
+        "cliente": "Fast Escova",
+        "os": "714"
+    }
+]
